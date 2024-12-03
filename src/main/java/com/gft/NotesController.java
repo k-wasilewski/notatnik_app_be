@@ -14,7 +14,7 @@ public class NotesController {
     public NotesService notesService;
 
     @GetMapping("/notes")
-    public List<List<String>> getAllNotes() {
+    public List<Note> getAllNotes() {
         return notesService.getAllNotes();
     }
 
