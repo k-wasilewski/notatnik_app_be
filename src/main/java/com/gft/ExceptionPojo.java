@@ -8,4 +8,20 @@ public class ExceptionPojo {
         this.message = message;
         this.status = status;
     }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public String getMessage() {
+        return this.message;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getStatus() {
+        return this.status;
+    }
 }

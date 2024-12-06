@@ -19,7 +19,7 @@ public class ResourceUtils {
         List<String> filenames = new ArrayList<>();
 
         for (int i=0; i<files.length; i++) {
-            filenames.add(files[i].getFilename());
+            filenames.add(files[i].getFilename().replaceAll(".md$", ""));
         }
 
         return filenames;
@@ -29,7 +29,7 @@ public class ResourceUtils {
         List<String> contents = new ArrayList<>();
 
         try (
-            InputStream in = getResourceAsStream(path);
+            InputStream in = getResourceAsStream(path+".md");
             BufferedReader br = new BufferedReader(new InputStreamReader(in))
         ) {
             String resource;
