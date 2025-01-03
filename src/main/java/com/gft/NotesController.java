@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.lang.Integer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +22,11 @@ public class NotesController {
     @RequestMapping(value = "/notes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public Flux<Note> getAllNotes() {
         return Flux.fromIterable(notesService.getAllNotes());
+    }
+
+    @RequestMapping(value = "/paginated/notes", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public Flux<Note> getPaginatedNotes(@RequestParam Integer start, @RequestParam Integer end) {
+        return Flux.fromIterable(notesService.getPaginatedNotes(start, end));
     }
 
     @ExceptionHandler({ RuntimeException.class })
