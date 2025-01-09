@@ -12,43 +12,41 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ResourceUtils {
-    @Value("classpath:notes/*.md")
-    private Resource[] files;
+  @Value("classpath:notes/*.md")
+  private Resource[] files;
 
-    public List<String> getResourceFilenames() {
-        List<String> filenames = new ArrayList<>();
+  public List<String> getResourceFilenames() {
+    List<String> filenames = new ArrayList<>();
 
-        for (int i=0; i<files.length; i++) {
-            filenames.add(files[i].getFilename().replaceAll(".md$", ""));
-        }
-
-        return filenames;
+    for (int i = 0; i < files.length; i++) {
+      filenames.add(files[i].getFilename().replaceAll(".md$", ""));
     }
 
-    public List<String> getResourceContentsByPath(String path) throws IOException {
-        List<String> contents = new ArrayList<>();
+    return filenames;
+  }
 
-        try (
-            InputStream in = getResourceAsStream(path+".md");
-            BufferedReader br = new BufferedReader(new InputStreamReader(in))
-        ) {
-            String resource;
+  public List<String> getResourceContentsByPath(String path) throws IOException {
+    List<String> contents = new ArrayList<>();
 
-            while ((resource = br.readLine()) != null) {
-                contents.add(resource);
-            }
-        }
+    try (InputStream in = getResourceAsStream(path + ".md");
+        BufferedReader br = new BufferedReader(new InputStreamReader(in))) {
+      String resource;
 
-        return contents;
+      while ((resource = br.readLine()) != null) {
+        contents.add(resource);
+      }
     }
 
-    private InputStream getResourceAsStream(String resource) {
-        final InputStream in = getContextClassLoader().getResourceAsStream(resource);
+    return contents;
+  }
 
-        return in == null ? getClass().getResourceAsStream(resource) : in;
-    }
+  private InputStream getResourceAsStream(String resource) {
+    final InputStream in = getContextClassLoader().getResourceAsStream(resource);
 
-    private ClassLoader getContextClassLoader() {
-        return Thread.currentThread().getContextClassLoader();
-    }
+    return in == null ? getClass().getResourceAsStream(resource) : in;
+  }
+
+  private ClassLoader getContextClassLoader() {
+    return Thread.currentThread().getContextClassLoader();
+  }
 }
