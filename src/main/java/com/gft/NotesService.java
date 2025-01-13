@@ -44,4 +44,11 @@ public class NotesService {
             })
         .collect(Collectors.toList());
   }
+
+  public void updateNote(Note note) throws BadRequestException, IOException, Exception {
+    List<String> filenames = resourceUtils.getResourceFilenames();
+    if (!filenames.contains(note.getTitle())) throw new BadRequestException("Note does not exist");
+
+    resourceUtils.writeContentsToResource(note.getTitle(), note.getContents(), NOTES_PATH + "/" + note.getTitle() + ".md");
+  }
 }
