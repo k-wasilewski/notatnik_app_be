@@ -39,9 +39,8 @@ public class NotesController {
       method = RequestMethod.PUT,
       produces = MediaType.APPLICATION_JSON_VALUE)
   public Mono<Object> updateNote(@RequestBody Note note) {
-
     try {
-      notesService.updateNote(note);
+      if (notesService.updateNote(note)) return Mono.just(note);
     } catch (BadRequestException bre) {
       return Mono.just(new ExceptionPojo(bre.getMessage(), 400));
     } catch (IOException ioe) {
@@ -50,7 +49,7 @@ public class NotesController {
       return Mono.just(new ExceptionPojo(e.getMessage(), 500));
     }
 
-    return Mono.just(note);
+    return Mono.empty();
   }
 
   @ExceptionHandler({RuntimeException.class})

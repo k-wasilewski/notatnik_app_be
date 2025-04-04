@@ -44,26 +44,32 @@ public class ResourceUtils {
     return contents;
   }
 
-  public void writeContentsToResource(String title, List<String> contents, String path) throws IOException, Exception {
+  public boolean writeContentsToResource(String title, List<String> contents, String path) throws IOException, Exception {
     File file = null;
-
+System.out.println("enter");
+System.out.println(title+contents.size()+path);
     for (int i = 0; i < files.length; i++) {
       if (files[i].getFilename().replaceAll(".md$", "").equals(title)) file = files[i].getFile();
     }
-
+System.out.println(file);
     if (file == null) throw new Exception("Couldn't find the given resource");
     file.delete();
 
     ClassLoader classLoader = getClass().getClassLoader();
     File newf = new File(classLoader.getResource(".").getFile() + path);
+    System.out.println(newf);
     if (!newf.createNewFile()) {
       throw new Exception("Couldn't write to the the given resource");
     }
 
     FileWriter f2 = new FileWriter(newf, false);
     Optional<String> opt = contents.stream().reduce((tot, line) -> tot + "\n" + line);
+    System.out.println(opt);
+    System.out.println(opt.get());
     f2.write(opt.get());
     f2.close();
+
+    return true;
   }
 
   private InputStream getResourceAsStream(String resource) {
