@@ -70,6 +70,20 @@ public class NotesController {
     return Mono.empty();
   }
 
+  @RequestMapping(
+      value = "/delete/notes",
+      method = RequestMethod.DELETE,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public Mono<Object> deleteNote(@RequestParam String title) {
+    try {
+      if (notesService.deleteNote(title)) return Mono.just(true);
+    } catch (Exception e) {
+      return Mono.just(new ExceptionPojo(e.getMessage(), 500));
+    }
+
+    return Mono.empty();
+  }
+
   @ExceptionHandler({RuntimeException.class})
   public Mono<ExceptionPojo> handleException(Exception ex) {
     return Mono.just(new ExceptionPojo(ex.getMessage(), 500));

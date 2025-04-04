@@ -44,16 +44,22 @@ public class ResourceUtils {
     return contents;
   }
 
+  public boolean deleteByTitle(String title) throws Exception {
+    File file = null;
+
+    for (int i = 0; i < files.length; i++) {
+      if (files[i].getFilename().replaceAll(".md$", "").equals(title)) file = files[i].getFile();
+    }
+
+    if (file == null) throw new Exception("Couldn't find the given resource");
+    file.delete();
+
+    return true;
+  }
+
   public boolean writeContentsToResource(String title, List<String> contents, String path, boolean newFile) throws IOException, Exception {
     if (!newFile) {
-      File file = null;
-
-      for (int i = 0; i < files.length; i++) {
-        if (files[i].getFilename().replaceAll(".md$", "").equals(title)) file = files[i].getFile();
-      }
-
-      if (file == null) throw new Exception("Couldn't find the given resource");
-      file.delete();
+      deleteByTitle(title);
     }
 
     ClassLoader classLoader = getClass().getClassLoader();

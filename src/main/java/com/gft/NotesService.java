@@ -51,7 +51,13 @@ public class NotesService {
     return resourceUtils.writeContentsToResource(note.getTitle(), note.getContents(), NOTES_PATH + "/" + note.getTitle() + ".md", false);
   }
 
-  public boolean addNote(Note note) throws IOException, Exception {
+  public boolean addNote(Note note) throws BadRequestException, IOException, Exception {
+    List<String> filenames = resourceUtils.getResourceFilenames();
+    if (filenames.contains(note.getTitle())) throw new BadRequestException("Note does already exist");
     return resourceUtils.writeContentsToResource(note.getTitle(), note.getContents(), NOTES_PATH + "/" + note.getTitle() + ".md", true);
+  }
+
+  public boolean deleteNote(String title) throws Exception {
+    return resourceUtils.deleteByTitle(title);
   }
 }
