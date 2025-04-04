@@ -48,6 +48,10 @@ public class NotesService {
   public boolean updateNote(Note note) throws BadRequestException, IOException, Exception {
     List<String> filenames = resourceUtils.getResourceFilenames();
     if (!filenames.contains(note.getTitle())) throw new BadRequestException("Note does not exist");
-    return resourceUtils.writeContentsToResource(note.getTitle(), note.getContents(), NOTES_PATH + "/" + note.getTitle() + ".md");
+    return resourceUtils.writeContentsToResource(note.getTitle(), note.getContents(), NOTES_PATH + "/" + note.getTitle() + ".md", false);
+  }
+
+  public boolean addNote(Note note) throws IOException, Exception {
+    return resourceUtils.writeContentsToResource(note.getTitle(), note.getContents(), NOTES_PATH + "/" + note.getTitle() + ".md", true);
   }
 }

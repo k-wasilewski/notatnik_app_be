@@ -52,6 +52,24 @@ public class NotesController {
     return Mono.empty();
   }
 
+  @RequestMapping(
+      value = "/add/notes",
+      method = RequestMethod.POST,
+      produces = MediaType.APPLICATION_JSON_VALUE)
+  public Mono<Object> addNote(@RequestBody Note note) {
+    try {
+      if (notesService.addNote(note)) return Mono.just(note);
+    } catch (BadRequestException bre) {
+      return Mono.just(new ExceptionPojo(bre.getMessage(), 400));
+    } catch (IOException ioe) {
+      return Mono.just(new ExceptionPojo(ioe.getMessage(), 500));
+    } catch (Exception e) {
+      return Mono.just(new ExceptionPojo(e.getMessage(), 500));
+    }
+
+    return Mono.empty();
+  }
+
   @ExceptionHandler({RuntimeException.class})
   public Mono<ExceptionPojo> handleException(Exception ex) {
     return Mono.just(new ExceptionPojo(ex.getMessage(), 500));
